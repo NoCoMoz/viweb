@@ -9,18 +9,29 @@ interface Mission {
   content: string[];
 }
 
-export async function getServerSideProps() {
+// Use getStaticProps instead of getServerSideProps for static export
+export async function getStaticProps() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/mission`); 
-    const missionData = await res.json();
+    // For static export, we'll use mock data
+    const mockMissionData: Mission[] = [
+      {
+        _id: "1",
+        heading: "Our Mission",
+        content: [
+          "Empowering voices through technology",
+          "Building inclusive digital communities",
+          "Fostering meaningful connections"
+        ]
+      }
+    ];
 
     return {
       props: {
-        missionData,
+        missionData: mockMissionData,
       },
     };
   } catch (error) {
-    console.error("Error fetching mission data:", error);
+    console.error("Error in getStaticProps:", error);
     return {
       props: {
         missionData: [],
@@ -34,7 +45,6 @@ export default function Home({ missionData }: { missionData: Mission[] }) {
     <div className="page">
       <div className="body-home">
         <TopSection missionData={missionData} />
-        {/* Social cloud section removed due to performance issues */}
         <div className="bluesky-section">
           <div className="container">
             <BlueSkyFeed postLimit={5} />
