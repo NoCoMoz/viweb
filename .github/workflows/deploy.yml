@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -42,9 +42,21 @@ jobs:
       - name: Build with Next.js
         run: |
           cd ${{ env.BUILD_PATH }}
+          # Ensure .next directory is clean
+          rm -rf .next out
+          # Build the application
           npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /viweb
+          NODE_ENV: production
+          
+      - name: Create required files
+        run: |
+          cd ${{ env.BUILD_PATH }}
+          # Ensure .nojekyll exists
+          touch out/.nojekyll
+          # Copy 404 page to root
+          cp out/404.html out/index.html
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
