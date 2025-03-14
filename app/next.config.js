@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable React strict mode for better development practices
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  output: 'export',
+  images: {
+    unoptimized: true,
+    domains: ['localhost'],
+    // Add other image domains as needed
+  },
   reactStrictMode: true,
 
   // Configure Turbopack for improved build performance
@@ -12,10 +19,8 @@ const nextConfig = {
     }
   },
 
-  // Optimize image handling
-  images: {
-    domains: ['localhost'],
-    // Add other image domains as needed
+  sassOptions: {
+    includePaths: ['./src/styles'],
   },
 
   // Configure environment variables
