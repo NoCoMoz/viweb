@@ -11,21 +11,20 @@ const nextConfig = {
   sassOptions: {
     includePaths: ['./src/styles'],
   },
-  // Disable server-side features for static export
+  trailingSlash: true,
+  // Disable server-side features
   experimental: {
     appDir: false,
   },
-  // Handle trailing slashes consistently
-  trailingSlash: true,
-  // Disable image optimization for static export
-  optimizeFonts: false,
-  // Add TypeScript strict mode
-  typescript: {
-    strict: true,
-  },
-  // Ensure proper static export
-  distDir: 'out',
+  // Ensure clean builds
+  distDir: '.next',
   cleanDistDir: true,
-};
+  // Disable font optimization for static export
+  optimizeFonts: false,
+  // Ensure proper static paths
+  env: {
+    NEXT_PUBLIC_BASE_PATH: '/viweb'
+  }
+}
 
 module.exports = nextConfig;
