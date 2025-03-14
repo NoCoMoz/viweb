@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build && next export",
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "clean": "rm -rf .next"
+    "clean": "rm -rf .next",
+    "deploy": "next build && next export && touch out/.nojekyll"
   },
   "dependencies": {
     "@atproto/api": "^0.14.9",
