@@ -1,32 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
   assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
-  output: 'export',
   images: {
     unoptimized: true,
-    domains: ['localhost'],
-    // Add other image domains as needed
+    domains: ['localhost', 'ui-avatars.com', 'images.unsplash.com'],
   },
   reactStrictMode: true,
-
-  // Configure Turbopack for improved build performance
-  experimental: {
-    turbo: {
-      rules: {
-        // Add any custom Turbopack rules here
-      }
-    }
-  },
-
   sassOptions: {
     includePaths: ['./src/styles'],
   },
-
-  // Configure environment variables
-  env: {
-    MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost:27017/viwebdb'
-  }
+  experimental: {
+    appDir: false,
+  },
+  trailingSlash: true,
 };
 
 module.exports = nextConfig;
