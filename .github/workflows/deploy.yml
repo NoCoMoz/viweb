@@ -14,6 +14,9 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  BUILD_PATH: "./app"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,25 +29,27 @@ jobs:
         with:
           node-version: "18"
           cache: 'npm'
-          cache-dependency-path: './app/package-lock.json'
+          cache-dependency-path: '${{ env.BUILD_PATH }}/package-lock.json'
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
       - name: Install dependencies
-        working-directory: ./app
-        run: npm ci
+        run: |
+          cd ${{ env.BUILD_PATH }}
+          npm ci
         
       - name: Build with Next.js
-        working-directory: ./app
-        run: npm run build
+        run: |
+          cd ${{ env.BUILD_PATH }}
+          npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /viweb
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./app/out
+          path: ${{ env.BUILD_PATH }}/out
 
   deploy:
     environment:
