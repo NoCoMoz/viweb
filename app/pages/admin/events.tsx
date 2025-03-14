@@ -74,25 +74,34 @@ const AdminEventsPage: React.FC = () => {
       setLoading(true);
       setError(null);
       
-      // Fetch pending events
-      const pendingResponse = await axios.get('/api/events', {
+      // Fetch pending events (unapproved only)
+      const pendingResponse: { data: { data: EventType[] } } = await axios.get('/api/events', {
         params: {
           adminRequest: 'true',
           showPending: 'true'
         }
       });
       
-      // Fetch the most recent approved events (limited to 5)
-      const approvedResponse = await axios.get('/api/events', {
+      // Fetch approved events only
+      const approvedResponse: { data: { data: EventType[] } } = await axios.get('/api/events', {
         params: {
           adminRequest: 'true',
+          showApproved: 'true',
           limit: 5
         }
       });
       
-      setPendingEvents(pendingResponse.data.data || []);
-      setApprovedEvents(approvedResponse.data.data || []);
-    } catch (err) {
+      // Format and validate the responses
+      const pendingData: EventType[] = pendingResponse.data.data || [];
+      const approvedData: EventType[] = approvedResponse.data.data || [];
+
+      // Additional validation to ensure no duplicates
+      const pendingIds = new Set(pendingData.map((event: EventType) => event._id));
+      const filteredApprovedData = approvedData.filter((event: EventType) => !pendingIds.has(event._id));
+      
+      setPendingEvents(pendingData);
+      setApprovedEvents(filteredApprovedData);
+    } catch (err: any) {
       console.error('Failed to fetch events:', err);
       setError('Failed to load events. Please try again.');
     } finally {
@@ -119,7 +128,7 @@ const AdminEventsPage: React.FC = () => {
       
       // Refresh events list
       fetchEvents();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to approve event:', err);
       setError('Failed to approve event. Please try again.');
     }
@@ -144,7 +153,7 @@ const AdminEventsPage: React.FC = () => {
       
       // Refresh events list
       fetchEvents();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to reject event:', err);
       setError('Failed to reject event. Please try again.');
     }

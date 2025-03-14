@@ -111,47 +111,77 @@ async function updateEvent(
   id: string
 ) {
   try {
+    console.log(`Processing update for event ${id}`);
+    console.log('Request body:', req.body);
+    
     const { action, adminName } = req.body;
     
     // Check if this is an approval action
     if (action === 'approve' || action === 'reject') {
-      const updateData: any = {};
+      console.log(`Processing ${action} action by ${adminName}`);
       
-      if (action === 'approve') {
-        updateData.approved = true;
-        updateData.approvedBy = adminName || 'Admin';
-        updateData.approvedAt = new Date();
-      } else if (action === 'reject') {
-        // For rejection, we could either delete the event or mark it specially
-        // For now, let's just delete rejected events
-        await Event.findByIdAndDelete(id);
-        return res.status(200).json({ 
-          success: true, 
-          message: 'Event rejected and removed' 
-        });
-      }
-      
-      const event = await Event.findByIdAndUpdate(
-        id, 
-        updateData, 
-        { new: true, runValidators: true }
-      );
-      
-      if (!event) {
+      // First, check if the event exists and isn't already in the desired state
+      const existingEvent = await Event.findById(id);
+      if (!existingEvent) {
+        console.log('Event not found');
         return res.status(404).json({ 
           success: false, 
           message: 'Event not found' 
         });
       }
+
+      // For approvals, check if already approved
+      if (action === 'approve' && existingEvent.approved) {
+        console.log('Event is already approved');
+        return res.status(400).json({
+          success: false,
+          message: 'Event is already approved'
+        });
+      }
       
-      return res.status(200).json({ 
-        success: true, 
-        message: `Event ${action === 'approve' ? 'approved' : 'rejected'}`,
-        data: event 
-      });
+      if (action === 'approve') {
+        console.log('Approving event...');
+        const updateData = {
+          approved: true,
+          approvedBy: adminName || 'Admin',
+          approvedAt: new Date()
+        };
+        
+        // Use findOneAndUpdate to ensure atomic operation
+        const event = await Event.findOneAndUpdate(
+          { _id: id, approved: false }, // Only update if not already approved
+          updateData,
+          { new: true, runValidators: true }
+        );
+        
+        if (!event) {
+          console.log('Failed to approve event - may already be approved');
+          return res.status(400).json({ 
+            success: false, 
+            message: 'Failed to approve event. It may already be approved.' 
+          });
+        }
+        
+        console.log('Event approved successfully');
+        return res.status(200).json({ 
+          success: true, 
+          message: 'Event approved successfully',
+          data: event 
+        });
+      } else if (action === 'reject') {
+        console.log('Rejecting event...');
+        // For rejection, we delete the event
+        await Event.findByIdAndDelete(id);
+        console.log('Event rejected and removed');
+        return res.status(200).json({ 
+          success: true, 
+          message: 'Event rejected and removed' 
+        });
+      }
     }
     
     // Regular update operation (not approval-related)
+    console.log('Processing regular update...');
     const updatedEvent = await Event.findByIdAndUpdate(
       id, 
       req.body, 
@@ -159,12 +189,14 @@ async function updateEvent(
     );
     
     if (!updatedEvent) {
+      console.log('Event not found for update');
       return res.status(404).json({ 
         success: false, 
         message: 'Event not found' 
       });
     }
     
+    console.log('Event updated successfully');
     return res.status(200).json({ 
       success: true, 
       data: updatedEvent 
@@ -185,7 +217,7 @@ async function updateEvent(
     return res.status(500).json({ 
       success: false, 
       message: 'Error updating event', 
-      error: (error as Error).message 
+      error: error instanceof Error ? error.message : 'Unknown error'
     });
   }
 }
