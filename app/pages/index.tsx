@@ -1,4 +1,5 @@
 import TopSection from "@/components/TopSection/TopSection";
+import BlueSkyFeed from "@/components/BlueSkyFeed/BlueSkyFeed";
 import "@/styles/index.styles.scss";
 import "@/styles/variables.scss";
 
@@ -33,6 +34,12 @@ export default function Home({ missionData }: { missionData: Mission[] }) {
     <div className="page">
       <div className="body-home">
         <TopSection missionData={missionData} />
+        {/* Social cloud section removed due to performance issues */}
+        <div className="bluesky-section">
+          <div className="container">
+            <BlueSkyFeed postLimit={5} />
+          </div>
+        </div>
       </div>
     </div>
   );
