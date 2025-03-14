@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "@/components/Header/Header";
 import "@/styles/globals.css";
+import "@/styles/pages/events.styles.scss";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 

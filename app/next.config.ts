@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
     }
     return config;
   },
+  // Configure font loading
+  images: {
+    domains: ['fonts.gstatic.com'],
+  },
 };
 
 export default nextConfig;

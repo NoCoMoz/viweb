@@ -14,7 +14,7 @@
   width: 100%;
   height: 35rem; 
   color: $primary-white;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 1);
+  text-shadow: 2px 2px 5px rgb(235, 247, 234);
   position: relative;
   overflow: hidden;
   
@@ -28,7 +28,7 @@
     bottom: 0;
     background: radial-gradient(circle at center, rgba(95, 65, 130, 0.3) 0%, transparent 70%);
     opacity: 0.7;
-    animation: pulse 8s ease-in-out infinite alternate;
+    animation: pulse 18s ease-in-out infinite alternate;
     z-index: -1;
   }
   
@@ -133,7 +133,7 @@
           radial-gradient(ellipse at 80% 40%, rgba(255, 60, 0, 0.8) 0%, rgba(255, 60, 0, 0) 25%),
           radial-gradient(ellipse at 30% 70%, rgba(255, 199, 0, 0.8) 0%, rgba(255, 199, 0, 0) 30%),
           radial-gradient(ellipse at 70% 30%, rgba(255, 60, 0, 0.8) 0%, rgba(255, 60, 0, 0) 35%);
-        filter: blur(8px);
+        filter: blur(2px);
         z-index: -1;
         animation: fire-move 6s ease-in-out infinite alternate;
         opacity: 0.9;
@@ -156,7 +156,7 @@
           radial-gradient(ellipse at 50% 30%, rgba(255, 199, 0, 0.6) 0%, rgba(255, 199, 0, 0) 40%),
           radial-gradient(ellipse at 70% 50%, rgba(255, 137, 0, 0.7) 0%, rgba(255, 137, 0, 0) 35%),
           radial-gradient(ellipse at 25% 60%, rgba(255, 45, 0, 0.7) 0%, rgba(255, 45, 0, 0) 25%);
-        filter: blur(12px);
+        filter: blur(2px);
         z-index: -2;
         animation: fire-dance 8s ease-in-out infinite;
         opacity: 0.7;
@@ -314,7 +314,7 @@
       font-size: 6rem;
       
       &:before, &:after {
-        filter: blur(6px);
+        filter: blur(2px);
       }
     }
   }
