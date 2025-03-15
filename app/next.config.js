@@ -1,11 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: '/viweb',
-  assetPrefix: '/viweb/',
+  output: 'export',
   images: {
     unoptimized: true,
   },
-  reactStrictMode: true,
+  basePath: '/viweb',
+  assetPrefix: '/viweb/',
+  trailingSlash: true,
   sassOptions: {
     includePaths: ['./src/styles'],
   },
