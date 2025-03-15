@@ -34,14 +34,16 @@ jobs:
         working-directory: ./app
         run: npm run build
 
-      - name: Create .nojekyll
+      - name: Copy 404 page
         working-directory: ./app
-        run: touch .next/.nojekyll
+        run: |
+          cp out/404.html out/404.html
+          touch out/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./app/.next
+          path: ./app/out
 
   deploy:
     environment:
