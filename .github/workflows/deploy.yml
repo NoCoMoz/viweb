@@ -35,15 +35,15 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_PATH: /viweb
 
-      - name: Add .nojekyll file
-        working-directory: ./app
-        run: |
-          touch out/.nojekyll
-          cp out/404.html out/404.html
+      - name: Configure Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./app/out
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: actions/deploy-pages@v4
         with:
-          folder: app/out
-          branch: gh-pages
-          clean: true
+          token: ${{ secrets.GITHUB_TOKEN }}
