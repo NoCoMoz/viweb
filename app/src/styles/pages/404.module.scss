@@ -1,4 +1,4 @@
-@import '../variables.scss';
+@use '../variables' as *;
 
 .errorContainer {
   display: flex;
@@ -8,8 +8,8 @@
   min-height: 100vh;
   padding: 2rem;
   text-align: center;
-  background: linear-gradient(135deg, $primary-color-light, $primary-color);
-  color: $text-light;
+  background: linear-gradient(135deg, $primary-button-color, $purple);
+  color: $primary-white;
 
   h1 {
     font-size: 3rem;
@@ -23,24 +23,24 @@
     margin-bottom: 2rem;
     max-width: 600px;
   }
+}
 
-  .homeLink {
-    display: inline-block;
-    padding: 0.8rem 1.5rem;
-    background-color: $accent-color;
-    color: $text-light;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-    font-weight: 500;
+.homeLink {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background-color: $primary-button-color;
+  color: $primary-white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
 
-    &:hover {
-      background-color: darken($accent-color, 10%);
-    }
+  &:hover {
+    background-color: darken($primary-button-color, 10%);
+  }
 
-    &:focus {
-      outline: 2px solid $text-light;
-      outline-offset: 2px;
-    }
+  &:focus {
+    outline: 2px solid $primary-white;
+    outline-offset: 2px;
   }
 }
