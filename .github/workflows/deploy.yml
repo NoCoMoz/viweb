@@ -2,65 +2,48 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["master"]
+    branches: [master]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: '18'
           cache: 'npm'
           cache-dependency-path: './app/package-lock.json'
 
       - name: Install dependencies
-        run: |
-          cd app
-          npm ci
+        working-directory: ./app
+        run: npm ci
 
-      - name: Build and Export
+      - name: Build
+        working-directory: ./app
         run: |
-          cd app
           npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /viweb
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v4
-
-      - name: Fix permissions
+      - name: Add .nojekyll file
+        working-directory: ./app
         run: |
-          cd app
-          chmod -R a+rx out
           touch out/.nojekyll
+          cp out/404.html out/404.html
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./app/out
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: app/out
+          branch: gh-pages
+          clean: true
