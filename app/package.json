@@ -3,15 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "clean": "rm -rf .next dist",
-    "predeploy": "npm run clean && npm run build",
-    "deploy": "touch dist/.nojekyll"
+    "clean": "rimraf .next out",
+    "predeploy": "npm run clean && cross-env NODE_ENV=production npm run build",
+    "deploy": "touch out/.nojekyll"
   },
   "dependencies": {
     "@atproto/api": "^0.14.9",
@@ -46,12 +46,14 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cross-env": "^7.0.3",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "ignore-loader": "^0.1.2",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "msw": "^2.7.0",
+    "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
     "typescript": "^5"
   }
