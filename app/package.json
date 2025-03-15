@@ -10,7 +10,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "clean": "rimraf .next out",
-    "predeploy": "npm run clean && cross-env NODE_ENV=production npm run build",
+    "export": "next export",
+    "predeploy": "npm run clean && npm run build",
     "deploy": "touch out/.nojekyll"
   },
   "dependencies": {
