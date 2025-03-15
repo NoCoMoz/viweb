@@ -10,6 +10,9 @@ const nextConfig = {
   reactStrictMode: true,
   sassOptions: {
     includePaths: ['./src/styles'],
+    modules: true,
+    importLoaders: 1,
+    localIdentName: '[local]___[hash:base64:5]'
   },
   trailingSlash: true,
   // Ensure proper static paths
