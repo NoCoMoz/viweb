@@ -12,15 +12,6 @@ const nextConfig = {
     includePaths: ['./src/styles'],
   },
   trailingSlash: true,
-  // Disable server-side features
-  experimental: {
-    appDir: false,
-  },
-  // Ensure clean builds
-  distDir: '.next',
-  cleanDistDir: true,
-  // Disable font optimization for static export
-  optimizeFonts: false,
   // Ensure proper static paths
   env: {
     NEXT_PUBLIC_BASE_PATH: '/viweb'
